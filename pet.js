@@ -1,4 +1,7 @@
-const inquirer = require("inquirer")
+// const inquirer = require("inquirer")
+
+import inquirer from 'inquirer';
+import chalk from 'chalk';
 
 const replayQuestion = () => {
   inquirer
@@ -61,22 +64,31 @@ class pet{
     
   drink() {
     this.hydration += 10
-    console.log(`${this.name} is drinking... their hydration has increased to ${this.hunger}`)
+    console.log(`${this.name} is drinking... their hydration has increased to ${this.hydration}`)
     this.decay()
     };
+    
+    stats() {      
+      console.log(`Hunger = ${this.hunger}`)
+      console.log(`Hydration = ${this.hydration}`)
+      console.log(`Fun = ${this.fun}`)
+      console.log(`Energy = ${this.energy}`)      
+      };
+
 }
 
 let initQuestions = [
   {
     type: "list",
     name: "type",
-    message: "Choose your pet",
+    message: chalk.bgBlue("Choose your pet"),
     choices: ["Dog", "Cat", "Rabbit", "Bear"],
-  },
+  }, 
   {
-    type: "input",
+    type: "input", 
     name: "name",
-    message: "Use the keyboard to enter your pets name",
+    message: chalk.bgRed("Use the keyboard to enter your pets name"),
+    // message: "Use the keyboard to enter your pets name",
   },
 ]
 
@@ -86,7 +98,7 @@ const init = () => {
   inquirer
     .prompt(initQuestions)
     .then((answers) => {
-      console.log(answers)
+      // console.log(answers)
       myPet = new pet(answers.name, answers.type)
     })
     .then(() => gameLoop())
@@ -126,21 +138,24 @@ const gameLoop = () => {
         type: "list",
         name: "action",
         message: "Choose an activity",
-        choices: ["feed", "drink", "play", "sleep"],
+        choices: ["Feed", "Drink", "Play", "Sleep" ,"View Stats"],
       },
     ])
     .then((answer) => {
-      if (answer.action === "feed") {
+      if (answer.action === "Feed") {
         myPet.feed()
       }
-      else if (answer.action === "drink") {
+      else if (answer.action === "Drink") {
         myPet.drink()
       }
-      else if (answer.action === "play") {
+      else if (answer.action === "Play") {
         myPet.play()
       }
-      else if (answer.action === "sleep") {
+      else if (answer.action === "Sleep") {
         myPet.sleep()
+      }
+      else if (answer.action === "View Stats") {
+        myPet.stats()
       }
     })
     .then(() => gameLoop())
